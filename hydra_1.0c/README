@@ -1,0 +1,34 @@
+This README file is for HydraScalar v1.0, whose files appear in this
+directory.  It is derived from SimpleScalar (SS) 2.0e, and many of its
+supporting files have been used almost unchanged.  The SimpleScalar
+README, installation instructions, copyright, and other documentation
+appear in the ss_docs/ subdirectory.  The SimpleScalar copy
+restrictions (ss_docs/COPYING) apply to files which are substantially
+unchanged; the HydraScalar copy restrictions (COPYING) apply only to
+'bconf.c', 'bpred.c', and 'hydra.c'.
+
+To install HydraScalar, you will need GNU's gcc compiler, and will
+also have to obtain a copy of the SimpleScalar "binutils".  See
+ss_docs/README.  I suggest you install the binutils in a directory at
+the same level as the HydraScalar directory.  Then the Makefile should
+work as is.  Otherwise, you will need to edit the line
+	BINUTILS_DIR = ../$(PLATFORM)/
+in the Makefile.  You may also have to change the MAKE variable.
+
+Once the binutils have been installed, compile HydraScalar by
+saying:
+	make PLATFORM=target EXTRA_CFLAGS="-DSS_ENDIAN"
+where "target" is the binutils directory you just made (eg sun),
+and "ENDIAN" is either "BIG" or "LITTLE" according to your target
+platform.  You can also add other compiler flags to the EXTRA_CFLAGS
+section.  So for a Sun, to compile with -DDEBUG, you would get:
+	make PLATFORM=sun EXTRA_CFLAGS="-DSS_BIG -DDEBUG"
+
+Two sample configuration files have been provided in the config/ 
+directory:
+	limits.cfg - an idealized configuration for exploring
+                     limits of performance
+	real.cfg - a realistic near-term configuration 
+
+Kevin Skadron, Princeton Dept. of Computer Science, 
+skadron@cs.princeton.edu

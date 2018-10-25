@@ -1,0 +1,111 @@
+OVERVIEW:
+
+This README file is for the SimpleScalar simulator release 2.0.  This release
+is available from:
+
+	http://www.cs.wisc.edu/~mscalar/simplescalar.html
+
+in the file simplesim-2.0.tar.gz.
+
+
+TO INSTALL:
+
+The following details how to build and install the SimpleScalar simulators:
+
+	a) vi Makefile
+
+	make sure all compile options are set for your host, you'll likely
+	not have to change anything for the supported hosts, and if you need
+	to change anything, it will likely be the CC variable (which specifies
+	the ANSI C compiler to use to build the simulators).  NOTE: the
+	simulators must be built with an ANSI-C compatible compiler, if you
+	have problems with your compiler, try using GNU GCC as it is known
+	to build the simulators on all the supported platforms.
+
+	b) make
+
+	this builds the simplescalar simulators
+
+	c) make sim-tests
+
+	this tests the simulators, this step will take anywhere from ~5 min
+	to an hour, depending on the performance of your host.  Inspect the
+	output of this command, when the script diff's the outputs of the
+	simulators against the known good outputs, there should be no
+	differences
+
+	d) vi pipeview.pl textprof.pl
+
+	configure these two perl scripts by placing the location of your
+	perl executable on the first line of each script
+
+
+TO INSTALL THE BINUTILS:
+
+There are many tools in the binary utilities distribution that you may find
+useful (e.g., objdump, size, nm, etc...).  The binary utilities can be found
+in the distribution file simpleutils-2.0.tar.gz (at the location listed above).
+
+To build and install the SimpleScalar-enabled binary utilities, unpack the
+sources in the same directory you unpacked the simulator distribution (i.e.,
+the directory with directory "simplesim-2.0/" in it):
+
+Step 1: determine the endian of your host
+
+	a) cd simplesim-2.0
+	b) make sysprobe
+	c) sysprobe -s
+
+	the last command should return either "big" or "little" indicating
+	that your host is big- or little-endian, respectively
+
+Step 2: build and install the SimpleScalar-enabled binary utilities
+
+	a) cd ../binutils-2.5.2
+	b) sh ./config.guess
+
+	this command will tell you your host type, let's call this <host>
+
+	c) configure --host=<host> --target=ss<endian>-na-sstrix --with-gnu-as --with-gnu-ld --prefix=<dir>
+
+	this configures the binary utilities package for your host, replace
+	<host> with the string returned from command 2.b, replace <endian>
+	with "big" or "little", as specified by the command 1.c above, and
+	replace <dir> with the directory you would like to contain the binary
+	utilities "bin/", "lib/", and "man/" subdirectory, this is probably
+	the directory containing "binutils-2.5.2" and "simplesim-2.0"
+
+	d) make
+
+	this builds the binary utilities
+
+	e) make install
+
+	this installs the binary utilities into <dir>
+
+	NOTE: if you previously installed the binary utilities package for
+	another host, be sure and do a "make distclean" before rebuilding
+	the package, or strange errors may occur.
+
+
+FOR MORE INFORMATION:
+
+For general documentation on the tool set, see the hacker's guide in the file
+"hack_guide.{pfd,ps,ppt}".  Frequently asked questions are answered in the FAQ
+file.  And suggested projects are listed in the file PROJECTS.  The simulators
+(the sim-* executables) are self-documenting, just run them with the "-h" flag.
+
+To get plugged into the SimpleScalar scene, join the SimpleScalar mailing list
+(simplescalar@cs.wisc.edu) by sending e-mail to majordomo@cs.wisc.edu, with the
+message body (not the subject header) containing "subscribe simplescalar".
+Also watch the SimpleScalar web page at:
+
+	http://www.cs.wisc.edu/~mscalar/simplescalar.html
+
+And please send up your comments regarding this tool set, we are continually
+trying to improve it and we appreciate your input.
+
+Best Regards,
+
+Todd Austin (taustin@ichips.intel.com), Intel MicroComputer Research Labs
+Doug Burger (dburger@cs.wisc.edu), UW-Madison Computer Sciences Department

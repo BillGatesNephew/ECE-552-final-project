@@ -1,0 +1,231 @@
+Greetings, Todd Austin, Doug Burger, and the UW-Madison Multiscalar project are
+pleased to announce the availability of the second major release of the
+SimpleScalar Architectural Research Tool Set.  It is our hope that computer
+architecture researchers and educators will find this release of value.  We
+welcome your feedback, Enjoy!!
+
+The technical report that describes the tool set, how to install and use it,
+and many details about the internals, is available in the "TR_1342.ps" file
+in this directory.
+
+
+WHAT IS THE SIMPLESCALAR TOOL SET?
+
+The SimpleScalar Tool Set consists of compiler, assembler, linker and
+simulation tools for the SimpleScalar architecture.  With this tool set, the
+user can simulate real programs on a range of modern processors and systems,
+using fast execution-driven simulation.  The tool set contains many simulators
+ranging from a fast functional simulator to a detailed out-of-order issue
+processor with a multi-level memory system.  The tool set provides researchers
+and educators with an easily extensible, portable, high-performance test bed
+for systems design or instruction.
+
+The SimpleScalar instruction set is an extension of Hennessy and Patterson's
+DLX instruction set, including also a number of instructions and addressing
+modes from the MIPS-IV and RS/6000 instruction set definitions.  SimpleScalar
+instructions employ a 64-bit encoding to facilitate instruction set research,
+e.g, it's possible to synthesize instruction or annotate existing instruction,
+or vary the number of registers a program uses.
+
+The SimpleScalar simulator suite includes a wide range of simulation tools
+ranging from simple function (instruction only, no timing) simulators to
+detailed performance (instruction plus timing) simulators.  The following
+simulators are included in this release:
+
+	sim-fast	-> a very fast functional (i.e., no timing) simulator
+	sim-safe	-> the minimal functional SimpleScalar simulator
+	sim-profile	-> a program profiling simulator
+	sim-cache	-> a multi-level cache simulator
+	sim-cheetah	-> a single-pass multi-configuration cache simulator
+	sim-outorder	-> a detailed out-of-order issue performance (timing)
+			   simulator with a multi-level memory system
+
+All the simulators in the SimpleScalar tools set are execution-driven, as a
+result, there is no need to generate, store, or read instruction trace files
+since all instructions streams are generated on the fly.  In addition,
+execution-driven simulation is an invaluable tool for modeling control and data
+mis-speculation in the performance simulators.
+
+
+WHY WOULD I WANT TO USE THE SIMPLESCALAR TOOL SET?
+
+The SimpleScalar Tool Set has many powerful features, here's the short list:
+
+	- it's free and all sources are included
+	- it's extensible (because it includes all sources and extensive docs)
+	- it's portable (it run on most any unix-like host)
+	- it's fast (on a P6-200, function simulation -> 4+ MIPS, and detailed
+	  out-of-order performance simulation with a multi-level memory
+	  system and mispeculation modeling cruises at 150+ KIPS)
+	- it's detailed (a whole family of simulators are included)
+
+
+HOW DO I GET IT?
+
+The tool set is available from the University of Wisconsin, to access
+the SimpleScalar Home Page, point your browser at:
+
+	http://www.cs.wisc.edu/~mscalar/simplescalar.html
+
+The complete release is available via anonymous FTP at:
+
+	ftp://ftp.cs.wisc.edu/pub/Sohi/Code/simplescalar
+
+
+WHO WROTE THE SIMPLESCALAR TOOL SET?
+
+The SimpleScalar tool set simulators and GNU compiler ports were written by
+Todd Austin.  The tool set is currently supported by Doug Burger (who wrote
+much of the documentation as well) and Todd Austin.  The development of this
+code was supported by grants from the National Science Foundation (grant
+CCR-9303030 plus software capitalization supplement) and the Office of Naval
+Research (grant N00014-93-1-0465).  The GNU compiler chain was written by the
+Free Software Foundation.
+
+
+ON WHICH PLATFORMS DOES IT RUN?
+
+SimpleScalar should port easily to any 32-bit flavor of UNIX, particularly
+those that support POSIX-compliant system calls.  The list of tested platforms
+are:
+
+		gcc/AIX413/RS6k
+		xlc/AIX413/RS6k
+		gcc/FreeBSD2.2/x86
+		gcc/HPUX/PA-RISC
+		gcc/SunOS413/SPARC
+		gcc/Linux1.3/x86
+		gcc/Solaris2/SPARC
+		gcc/Solaris2/x86
+		gcc/DECUnix3.2/Alpha
+		c89/DECUnix3.2/Alpha
+		gcc/CygWin32-WinNT/x86
+
+
+HOW CAN I KEEP INFORMED AS TO NEW RELEASES AND ANNOUNCEMENTS?
+
+We have set up a SimpleScalar mailing list. To subscribe, send e-mail to
+majordomo@cs.wisc.edu, with the message body (not the subject header)
+containing "subscribe simplescalar".  Also, watch the SimpleScalar web page at:
+
+	http://www.cs.wisc.edu/~mscalar/simplescalar.html
+
+
+WHAT'S NEW IN RELEASE 2.0:
+
+Lots!  In this release, we concentrated on improving the ease of installation,
+use, and extension of the SimpleScalar simulator tools.  We've also added new
+features to all the simulators from the last release, and two new simulators
+have been added.  In addition, we've added two visualizations tools and all
+reported bugs have been fixed.  No changes were may to the instruction set
+definition or compiler chain, so only the simulators need to be updated.
+Here's a list of the new stuff...
+
+	- the simulators now compile "out of the box" on many platforms
+	  (listed above); in addition, you should be able to get SimpleScalar
+	  up and running with minimal effort on any target with 32-bit
+	  integers, IEEE FP, and POSIX-like system calls.  In addition, the
+	  release 2.0 simulators have been updated to support Alpha/OSF and
+	  x86/WinNT.  (NOTE: the Alpha/OSF and x86/WinNT ports are still in
+	  the testing phase of development.)
+
+	- the SimpleScalar Tool Set is now available in five parts, the new
+	  packaging no longer requires users to install the compiler chain to
+	  use the simulators (since benchmark binaries are now available)
+		- simpleutils-2.0.tar.gz        -> binary utilities, required
+		- simplesim-2.0.tar.gz          -> simulator suite, required
+		- simpletools-2.0.tar.gz        -> compiler/asm/libs, optional
+		- simplebench.big-2.0.tar.gz    -> (big-endian version)
+		- simplebench.little-2.0.tar.gz -> benchmark binaries, optional
+						   (little-endian version)
+	  to use the benchmark binaries, simply grab the version that matches
+	  the endian-ness of the host processor you will run the simulators on,
+	  (if you're not sure of the endian, install simplesim-2.0 first, as
+	   it indicate your host's endian); in addition, the simulator
+	  release (simplesim-2.0.tar.gz) also includes big- and little-endian
+	  test binaries
+
+	- all simulator options parsing is now handled by a central options
+	  package, this thing is loaded with features, including the ability
+	  to save option state to a file for later reload, automatic help
+	  screen generation, automatic display of all option states, and more,
+	  one look at this package and you'll never getopt() again!
+
+	- all simulator statistical reporting is now handled by a central
+	  statistics package, this thing is chock full of options, including
+	  auto-reporting support with descriptions of stats, support for
+	  array and sparse distributions, support for statistical expressions,
+	  i.e., expressions which are simple functions of other expressions,
+	  automatic generation canonical output for easy consumption by other
+	  programs, etc..., this is truly the mother of all stats packages!
+
+	- DLite!, the lite debugger.  DLite! is a symbolic debugger (supported
+	  in all the simulators) that permits the user to set break points
+	  (exec, read, write with ranges!), single step execution, display
+	  architected and microarchitected state, etc, etc, etc..., the
+	  best feature of DLite! is its ease of use in new simulators, you can
+	  splice this thing into any SimpleScalar-based simulator with only
+	  *four* function calls!
+
+	- many comments were added to the code (better late than never) -
+	  every file, every function, every less than obvious piece of
+	  hackery - you should now be able to "use the source, Luke"...
+
+	- a new User's and Hacker's guide has been added, which includes
+	  voluminous amounts of information on how to use and hack the
+	  SimpleScalar Tool Set, we also updated the SimpleScalar tech report;
+	  in addition, the simulators are now nearly "self-documenting"
+
+	- sim-cheetah: a new simulator for single-pass, multi-configuration
+	  cache simulator, Rabin Sugumar and Santosh Abraham have allowed us to
+	  include a version of of the Cheetah cache simulator which has been
+	  fully interfaced to sim-cheetah, this is a very fast cache simulator
+	  that supports lots and lots of cache configurations
+
+	- sim-cache and sim-outorder: the memory systems supported have been
+	  enhanced, they now support most any one- or two-level cache
+	  configuration, optionally unified at any level of the cache
+	  hierarchy; instruction and data TLBs are now also supported; new
+	  memory bus widths and latency configurations are now supported
+
+	- sim-profile: a new simulator for program profiling, this thing
+	  can generate reams of information regarding instruction classes,
+	  memory accesses, branches, text profiles, data profiles, function
+	  profiles, etc...; in addition sim-outorder now incorporates much
+	  of the profiling functionality implemented in sim-profile, permitting
+	  the user to break down most statistical variables by text address,
+	  e.g., branch mis-predictions by text address
+
+	- textprof.pl: a new perl script for viewing text profile statistics
+	  with program assembly
+
+	- sim-outorder: lots of enhancements, including many new comments, TLB
+	  support, a more detailed memory system, support for generating text
+	  profiles for most any statistics variable, microarchitecture state
+	  dump support (via the mstate command in DLite!), pipeline tracing
+	  support, new support for two-level adaptive branch predictors,
+	  etc...
+
+	- pipeview.pl: a new perl script for viewing sim-outorder pipeline
+	  traces, this program displays instructions in flight with interesting
+	  events by pipeline stage, for each cycle of traced execution
+
+
+	- the simulators can now be built by any ANSI C compiler
+	  (all GNU GCC-isms in the code have been excised)
+
+	- the simulators now include a standalone loader, users
+	  no longer need to install the binutils to use the
+	  simulators (however, many of the binutils are very useful,
+	  so we still recommend you install that package if you plan
+	  on using the SimpleScalar tool set)
+
+
+Please send up your comments regarding this tool set, we are continually
+trying to improve it and we appreciate your input.
+
+Best Regards,
+
+Todd Austin (taustin@ichips.intel.com), Intel MicroComputer Research Labs
+Doug Burger (dburger@cs.wisc.edu), UW-Madison Computer Sciences Department
+

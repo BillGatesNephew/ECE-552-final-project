@@ -1,0 +1,10 @@
+Updates since pre-release 2.0a:
+
+  Mon Feb 17: Makefile: fixed CFLAGS value sent to libcheetah
+  Mon Feb 17: cache.c: ifdef'ed out random declaration for alpha host
+  Mon Feb 17: main.c fixed comments on call to signal()
+  Mon Feb 19: sim-outorder.c: ruu_issue_width now works (ruu_issue() updated)
+  Mon Mar  3: *.c: supported added for non-GNU GCC compilers (ouch!)
+  Mon Mar 10: sim-outorder.c: lsq_refresh updated, new version handles
+	      short-term memory communication correctly
+
