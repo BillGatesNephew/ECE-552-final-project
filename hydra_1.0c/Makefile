@@ -159,8 +159,9 @@ BINUTILS_DIR = ../$(PLATFORM)/
 #
 # external libraries required for build
 #
-SIM_LIB = $(BINUTILS_DIR)/lib/libbfd.a $(BINUTILS_DIR)/lib/libiberty.a -lm
-
+#SIM_LIB = $(BINUTILS_DIR)/lib/libbfd.a $(BINUTILS_DIR)/lib/libiberty.a -lm
+#SIM_LIB = -lbsd -lbfd -liberty -lm
+SIM_LIB = -lbfd -lbfd -lm
 ##################################################################
 #
 # YOU SHOULD NOT NEED TO MODIFY ANYTHING BELOW THIS COMMENT
@@ -188,13 +189,15 @@ endif
 # 
 # User may add flags to CFLAGS by defining this on the command line
 #
-EXTRA_CFLAGS =
+#EXTRA_CFLAGS = -DSS_LITTLE
+
+# Change last two numbers to either: 8, 16, 24, 40, or 64 to change number of program threads available
+EXTRA_CFLAGS = -DCFG24
 
 #
 # complete flags
 #
-CFLAGS = $(MFLAGS) $(FFLAGS) $(OFLAGS) $(EXTRA_CFLAGS) \
- -I$(BINUTILS_DIR)/include
+CFLAGS = $(MFLAGS) $(FFLAGS) $(OFLAGS) $(EXTRA_CFLAGS) 
 
 #
 # all the sources

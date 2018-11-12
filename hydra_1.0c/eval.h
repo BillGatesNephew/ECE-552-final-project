@@ -80,7 +80,7 @@
 #define EVAL_H
 
 #include <stdio.h>
-
+#include <errno.h>
 /* forward declarations */
 struct eval_state_t;
 struct eval_value_t;

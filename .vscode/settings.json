@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.jsx": "javascript",
+    "sgtty.h": "c",
+    "select.h": "c"
+  }
+}

@@ -112,7 +112,8 @@
 #include <sys/select.h>
 #endif
 #ifdef linux
-#include <bsd/sgtty.h>
+#include <sgtty.h>
+//#include <bsd/sgtty.h>
 #endif /* linux */
 
 #ifdef __CYGWIN32__
@@ -734,73 +735,73 @@ ss_syscall(mem_access_fn mem_fn,	/* generic memory accessor */
 	int local_req = 0;
 
 	/* convert target ioctl() request to host ioctl() request values */
-	switch (/*req*/regs_R[5]) {
-/* #if !defined(__CYGWIN32__) */
-	case SS_IOCTL_TIOCGETP:
-	  local_req = TIOCGETP;
-	  break;
-	case SS_IOCTL_TIOCSETP:
-	  local_req = TIOCSETP;
-	  break;
-	case SS_IOCTL_TCGETP:
-	  local_req = TIOCGETP;
-	  break;
-/* #endif */
-#ifdef TCGETA
-	case SS_IOCTL_TCGETA:
-	  local_req = TCGETA;
-	  break;
-#endif
-#ifdef TIOCGLTC
-	case SS_IOCTL_TIOCGLTC:
-	  local_req = TIOCGLTC;
-	  break;
-#endif
-#ifdef TIOCSLTC
-	case SS_IOCTL_TIOCSLTC:
-	  local_req = TIOCSLTC;
-	  break;
-#endif
-	case SS_IOCTL_TIOCGWINSZ:
-	  local_req = TIOCGWINSZ;
-	  break;
-#ifdef TCSETAW
-	case SS_IOCTL_TCSETAW:
-	  local_req = TCSETAW;
-	  break;
-#endif
-#ifdef TIOCGETC
-	case SS_IOCTL_TIOCGETC:
-	  local_req = TIOCGETC;
-	  break;
-#endif
-#ifdef TIOCSETC
-	case SS_IOCTL_TIOCSETC:
-	  local_req = TIOCSETC;
-	  break;
-#endif
-#ifdef TIOCLBIC
-	case SS_IOCTL_TIOCLBIC:
-	  local_req = TIOCLBIC;
-	  break;
-#endif
-#ifdef TIOCLBIS
-	case SS_IOCTL_TIOCLBIS:
-	  local_req = TIOCLBIS;
-	  break;
-#endif
-#ifdef TIOCLGET
-	case SS_IOCTL_TIOCLGET:
-	  local_req = TIOCLGET;
-	  break;
-#endif
-#ifdef TIOCLSET
-	case SS_IOCTL_TIOCLSET:
-	  local_req = TIOCLSET;
-	  break;
-#endif
-	}
-
+// 	switch (/*req*/regs_R[5]) {
+// /* #if !defined(__CYGWIN32__) */
+// 	case SS_IOCTL_TIOCGETP:
+// 	  local_req = TIOCGETP;
+// 	  break;
+// 	case SS_IOCTL_TIOCSETP:
+// 	  local_req = TIOCSETP;
+// 	  break;
+// 	case SS_IOCTL_TCGETP:
+// 	  local_req = TIOCGETP;
+// 	  break;
+// /* #endif */
+// #ifdef TCGETA
+// 	case SS_IOCTL_TCGETA:
+// 	  local_req = TCGETA;
+// 	  break;
+// #endif
+// #ifdef TIOCGLTC
+// 	case SS_IOCTL_TIOCGLTC:
+// 	  local_req = TIOCGLTC;
+// 	  break;
+// #endif
+// #ifdef TIOCSLTC
+// 	case SS_IOCTL_TIOCSLTC:
+// 	  local_req = TIOCSLTC;
+// 	  break;
+// #endif
+// 	case SS_IOCTL_TIOCGWINSZ:
+// 	  local_req = TIOCGWINSZ;
+// 	  break;
+// #ifdef TCSETAW
+// 	case SS_IOCTL_TCSETAW:
+// 	  local_req = TCSETAW;
+// 	  break;
+// #endif
+// #ifdef TIOCGETC
+// 	case SS_IOCTL_TIOCGETC:
+// 	  local_req = TIOCGETC;
+// 	  break;
+// #endif
+// #ifdef TIOCSETC
+// 	case SS_IOCTL_TIOCSETC:
+// 	  local_req = TIOCSETC;
+// 	  break;
+// #endif
+// #ifdef TIOCLBIC
+// 	case SS_IOCTL_TIOCLBIC:
+// 	  local_req = TIOCLBIC;
+// 	  break;
+// #endif
+// #ifdef TIOCLBIS
+// 	case SS_IOCTL_TIOCLBIS:
+// 	  local_req = TIOCLBIS;
+// 	  break;
+// #endif
+// #ifdef TIOCLGET
+// 	case SS_IOCTL_TIOCLGET:
+// 	  local_req = TIOCLGET;
+// 	  break;
+// #endif
+// #ifdef TIOCLSET
+// 	case SS_IOCTL_TIOCLSET:
+// 	  local_req = TIOCLSET;
+// 	  break;
+// #endif
+// 	}
+local_req = 0; 
 	if (!local_req)
 	  {
 	    /* FIXME: could not translate the ioctl() request, just warn user

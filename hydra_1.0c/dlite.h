@@ -141,7 +141,7 @@
 #include <stdio.h>
 #include "misc.h"
 #include "ss.h"
-
+#include <errno.h>
 /* state access commands */
 enum dlite_access_t {
   at_read,		/* read register/memory value */

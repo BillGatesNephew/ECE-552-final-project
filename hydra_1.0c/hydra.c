@@ -306,7 +306,6 @@ extern long random(void);
  * modeled.
  */
 
-
 /*
  * simulator options
  */
@@ -2177,7 +2176,7 @@ sim_check_options(struct opt_odb_t *odb,        /* options database */
   if (ruu_branch_penalty < 1)
     warn("mis-prediction penalty has been declared less than 1 cycle");
 
-  if (max_cache_lines < 1)
+  if (max_cache_lines < 0)
     fatal("-fetch:max_lines_per_thread must be a positive number");
 
   if (bconf_type == BCF_None && bconf_th_selector != BTS_Profile)
@@ -3555,7 +3554,7 @@ reset_fetch(int go_backwards)
   int t;
   for (t = 0; t < N_THREAD_RECS; t++)
     {
-      if (thread_info[t].lines_fetched_this_cycle > max_cache_lines)
+      if (thread_info[t].lines_fetched_this_cycle > max_cache_lines && max_cache_lines != 0)
        fatal("error: thread_info[t].lines_fetched_this_cycle > max_cache_lines"
 	     "\n   Check whether max_cache_lines has been set correctly");
       thread_info[t].fetched_this_cycle = FALSE;
@@ -9572,26 +9571,21 @@ ruu_fetch_wrapper(void)
 	   * Each thread's allocation is fixed once per cycle,
 	   * so if we encounter a blocking condition, remaining
 	   * cache lines for this thread are wasted */
-	  if (!done && !thread_info[thread].fetched_this_cycle)
-	    {
+	  if (!done && !thread_info[thread].fetched_this_cycle) {
 	      done = ruu_fetch(thread, &fetched_this_line);
 	      
-	      if (!done 
-		  && (fetch_pri_pol==Simple_RR || fetch_pri_pol==Pred_RR))
-		thread_info[thread].fetched_this_cycle = FALSE;
+	      if (!done && (fetch_pri_pol==Simple_RR || fetch_pri_pol==Pred_RR))
+		      thread_info[thread].fetched_this_cycle = FALSE;
 	      else if (done)
-		thread_info[thread].fetched_this_cycle = INTERMEDIATE;
-	      else if (fetch_pri_pol == Pred_Pri2 
-		       && thread != pred_thread
-		       && pred_thread_fetchable)
-		thread_info[thread].fetched_this_cycle = TRUE;
+		      thread_info[thread].fetched_this_cycle = INTERMEDIATE;
+	      else if (fetch_pri_pol == Pred_Pri2 && thread != pred_thread && pred_thread_fetchable)
+		      thread_info[thread].fetched_this_cycle = TRUE;
 	      
 	      num_fetched += fetched_this_line;
 	      thread_info[thread].lines_fetched_this_cycle++;
-	      if (thread_info[thread].lines_fetched_this_cycle
-		  >= max_cache_lines)
-		thread_info[thread].fetched_this_cycle = TRUE;
-	    }
+	      if (thread_info[thread].lines_fetched_this_cycle >= max_cache_lines)
+		      thread_info[thread].fetched_this_cycle = TRUE;
+	  }
 	  cache_lines_left--;
 	  assert(cache_lines_left >= 0);
 	  /* ruu_fetch() updates thread_info[] so that the next call to
