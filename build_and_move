@@ -1,0 +1,41 @@
+#!/bin/bash 
+
+############################
+##    Script Constants     #
+############################
+# Shell colors and line separators
+RED_COLOR='\033[0;31m';
+CYAN_COLOR='\033[0;36m';
+NO_COLOR='\033[0m';
+LINE_SEPARATOR="###############################################################\n";
+# Filepath for where to copy the compiled hydra scalar
+BENCHMARKS_PATH="../working-benchmarks/benchmarks/hydra";
+
+############################
+## Check Script Arguments ##
+############################
+# Second conditional component checks for proper number of threads passed  
+if [[ "$#" -ne 1 || ( "$1" -ne 8 && "$1" -ne 16 && "$1" -ne 24 && "$1" -ne 40 && "$1" -ne 64  ) ]]; then 
+  printf "${CYAN_COLOR}Improper call to build script. The proper format is the following: \n\n${NO_COLOR}";
+  printf "${RED_COLOR}  ./build_and_move.sh <# of Threads for Hydrascalar> \n\n${NO_COLOR}";
+  printf "${CYAN_COLOR}The number passed must be one of the following: 8, 16, 24, 40, or 64. \n${NO_COLOR}";
+else 
+
+############################
+##   Compile Hydrascalar  ##
+############################
+  # Print info header
+  printf "${CYAN_COLOR}$LINE_SEPARATOR${NO_COLOR}"; 
+  printf "\t  ${CYAN_COLOR}Compiling Hydrascalar For${NO_COLOR} ${RED_COLOR}$1${NO_COLOR} ${CYAN_COLOR}Threads\n${NO_COLOR}"    
+  printf "${CYAN_COLOR}$LINE_SEPARATOR${NO_COLOR}";
+  # Change directories and clean old files  
+  cd ./hydra_1.0c; 
+  make clean; 
+  # Compile hydrascalar using the specified number of threads 
+  # NOTE: Warnings for compilation are turned off (-w flag)
+  make hydra EXTRA_CFLAGS="-w -DCFG$1"; 
+  printf "\n";
+  # Move hydra binary into the benchmarks directory 
+  printf "${CYAN_COLOR}Hydrascalar copied to${NO_COLOR} ${RED_COLOR}$BENCHMARKS_PATH\n${NO_COLOR}";
+  cp ./hydra $BENCHMARKS_PATH 
+fi 

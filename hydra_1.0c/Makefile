@@ -192,7 +192,7 @@ endif
 #EXTRA_CFLAGS = -DSS_LITTLE
 
 # Change last two numbers to either: 8, 16, 24, 40, or 64 to change number of program threads available
-EXTRA_CFLAGS = -DCFG24
+#EXTRA_CFLAGS = -w -DCFG24
 
 #
 # complete flags
