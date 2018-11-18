@@ -1,0 +1,161 @@
+hydra: Version 3.0 of April, 1998.
+Copyright (c) 1998 by Kevin Skadron.  All Rights Reserved.
+
+warning: ret-addr stack size specified in PHT config, but overridden
+
+sim: simulation started @ Sun Nov 18 13:05:55 2018, options follow:
+
+sim-outorder: This simulator implements a very detailed out-of-order issue
+superscalar processor with a two-level memory system and speculative
+execution support.  This simulator is a performance simulator, tracking the
+latency of all pipeline operations.
+
+# -config                     # load configuration from a file
+# -dumpconfig                 # dump configuration to a file
+# -h                    false # print help message    
+# -v                    false # verbose operation     
+# -i                    false # start in Dlite debugger
+-seed                       1 # random number generator seed (0 for timer seed)
+# -q                    false # initialize and terminate immediately
+-outfile         ../../benchmark-results/default_8_threads/gcc.out # file for simulator output
+# -ptrace              <null> # generate pipetrace, i.e., <level> <fname|stdout|stderr> <range>
+-threads:max                1 # max number of threads to support
+-fork:in_fetch           true # do forking in fetch stage
+-fork:lat                   3 # penalty charged to forked-off path
+-fork:approx_in_fetch        false # if fork-in-dispatch, try to approx fork-in-fetch
+-fork:penalize_fork_nt         true # if fork-in-dispatch, charge mplat against fork down not-taken path
+-fork:prune             false # only fork on predicted path
+-fetch:num_cache_lines            1 # max no. cache lines to fetch in one cycle
+-fetch:max_lines_per_thread            0 # max no. cache lines to fetch in one cycle (zero: no limit)
+-fetch:max_fetchable_per_line            4 # max no. insts from a cache line that can be fetched as one unit
+-fetch:ifqsize              4 # instruction fetch queue size (in insts)
+-fetch:mplat                3 # extra branch mis-prediction latency
+-fetch:max_in_flight_branches            4 # max number of in-flight branches allowed per_thread (0 = no limit)
+-fetch:pri_pol      simple_rr # fetch priority policy (simple_rr|old_rr|pred_rr|omni_pri|two_omni_pri|pred_pri|pred_pri2|ruu_pri)
+-fetch:two_pri_lev            2 # pri lev for corr. thread under two_omni_pri
+-fetch:pred_pri_lev            2 # pri lev for pred path under pred_pri
+-fetch:ruu_pri_lev            2 # pri lev for least-insts-in-ruu under ruu_pri
+-bpred                  bimod # branch predictor type {nottaken|taken|perfect|bimod|2lev|hybrid}
+-bpred:bimod     2 2048 8 0 # bimodal pred cfg (<cntr_bits> <tbl_size> <retstack_size> <agree?>)
+-bpred:2lev      2 1 1024 8 8 0 0 0 1 # 2lev pred cfg (<cntr_bits> <l1_sz> <l2_sz> <hist_sz> <retstack_size> <gshare?> <agree?> <spec-update?> <spec-update repair?>)
+-bpred:2lev2     2 1024 1024 8 0 0 0 0 1 # 2lev pred cfg #2 (<cntr_bits> <l1_sz> <l2_sz> <hist_sz> <retstack_size> <gshare?> <agree?> <spec-update?> <spec-update repair?>)
+-bpred:hybrid    2:4096:bimod:2lev2:12:8:0:0:1 # hybrid predictor config (<cntr_bits>:<tbl-sz>:<pred1>:<pred2>:<sh-reg-sz>:<retstack_sz>:<gshare?>:<spec-update?>:<spec-update repair?>)
+-bpred:btb       512 4 # BTB config (<num_sets> <associativity>)
+-bpred:retstack             8 # retstack size         
+-bpred:use_old_retstack_interface        false # use retstack size from the PHT config instead of from '-bpred:retstack'
+-bpred:per_thread_retstack     one_xxxx # for multipath: what type of retstack? (one, one_pred, per, tosp_per)
+-bpred:merge_hist            0 # hash global with local history bits; argument specifies global history size
+-bpred:merge_hist_shift            0 # hash shifted global with local history bits; argument specifies global history size
+-bpred:cat_hist             0 # concatenate global and local history bits; argument specifies global history size
+-bpred:gshare_shift            0 # hash shifted baddr with global history bits; argument specifies address left-shift
+-bpred:gshare_drop_lsbits            0 # number of low-order br-address bits (beyond the automatic 3) to drop for gshare
+-bpred:spec_update        false # update bpred in writeback? (ie speculatively)
+-bpred:perf_update        false # update bpred perfectly in decode?
+-bpred:synthetic_boost       0.0000 # percentage of mispredictions to boost (as a fraction)
+-bpred:synthetic_decrease       0.0000 # percentage of good predictions to make incorrect (as a fraction)
+-bpred:fix_addrs        false # correct address prediction for br's w/ correct direction?
+-bpred:fix_addrs_indir        false # correct address prediction for indir jumps?
+-bpred:perf_except_retstack        false # correct address prediction for indir jumps but not for retstack?
+-cbr:hist               false # output cbr history bit-stream to a file?
+-cbr:acc                false # output cbr accuracy bit-stream to a file?
+-cbr:dist               false # output cbr distributions?
+-bpred:retstack_patch_level            2 # 0: no patching, 1: patch TOS pointer only, 2: also patch TOS contents
+-bconf                  naive # bconf predictor type (naive|omni|ones|sat|reset|pattern)
+-bconf:selector          none # bconf predictor threshold selector (none|profile|hw)
+-bconf:spec_update        false # speculatively update the branch confidence predictor?
+-bconf:perf_update        false # update bconf perfectly in decode?
+-bconf:thresholds 7 # thresholds for the bconf predictor (<t1> <t2> <t3>)
+-bconf:table_size         1024 # number of entries in the branch confidence prediction table
+-bconf:table_width            8 # number of bits per entry in the branch confidence prediction table
+-bconf:gshare               1 # xor global history bits with branch-address bits?
+-bconf:dist             false # output bconf correct/incorrect patterns?
+-bconf:squash_extra        false # squash forks for correctly-pred branches?
+-bconf:fork_mispred        false # fork (if possible) on any misprediction?
+-bconf:hist_update            0 # use bconf history to update bconf table entries?
+# -bconf:config_file       <null> # bconf configuration file name
+-decode:width               4 # instruction decode B/W (insts/cycle)
+-decode:extra_lat            0 # extra decode latency  
+-issue:width                4 # instruction issue B/W (insts/cycle)
+-issue:int_width            4 # int instruction issue B/W (insts/cycle)
+-issue:fp_width             4 # fp instruction issue B/W (insts/cycle)
+-issue:inorder          false # run pipeline with in-order issue
+-issue:wrongpath         true # issue instructions down wrong execution paths
+-issue:extra_lat            1 # extra issue latency (for extra (eg register-read) stages)
+-issue:intq_size           16 # integer issue queue (IIQ) size
+-issue:fpq_size            16 # fp issue queue (FIQ) size
+-issue:aggressive         true # gives priority to mem, br, and long-lat ops
+-squash:remove           true # remove RUU/LSQ entries squashed by mispredicts, or propagate them to commit?
+-ruu:size                  16 # register update unit (RUU) size
+-lsq:size                   8 # load/store queue (LSQ) size
+-commit:width               4 # instruction commit B/W (insts/cycle)
+-cache:dl1       dl1:128:32:4:l:4:2 # l1 data cache config, i.e., {<config>|none}
+-cache:dl1lat    1 1 # l1 data cache access latency (<base lat> <extra hit lat>)
+-cache:dl1:ports            2 # Number of dl1 ports   
+-cache:dl1:perfect        false # Whether L1 D-cache is perfect
+-cache:dl2       ul2:1024:64:4:l:4:4 # l2 data cache config, i.e., {<config>|none}
+-cache:dl2lat    2 1 # l2 data cache access latency (<base lat> <extra hit lat>)
+-cache:dl2:perfect        false # Whether L2 D-cache is perfect
+-cache:il1       il1:512:32:1:l:1:2 # l1 inst cache config, i.e., {<config>|dl1|dl2|none}
+-cache:il1lat    1 1 # l1 data cache access latency (<base lat> <extra hit lat>)
+-cache:il1:blksize           32 # L1 I-cache block size, only needed if L1 I-cache is not instantiated
+-cache:il1:perfect        false # Whether L1 I-cache is perfect
+-cache:il2                dl2 # l2 instruction cache config, i.e., {<config>|dl2|none}
+-cache:il2:perfect        false # Whether L2 I-cache is perfect
+-cache:il2lat    2 1 # l1 data cache access latency (<base lat> <extra hit lat>)
+-cache:flush            false # flush caches on system calls
+-cache:icompress        false # convert 64-bit inst addresses to 32-bit inst equivalents
+-mem:lat         18 2 # memory access latency (<first_chunk> <inter_chunk>)
+-mem:width                  8 # memory access bus width (in bytes)
+-tlb:itlb        itlb:16:4096:4:l # instruction TLB config, i.e., {<config>|none}
+-tlb:dtlb        dtlb:32:4096:4:l # data TLB config, i.e., {<config>|none}
+-tlb:lat                   30 # inst/data TLB miss latency (in cycles)
+-tlb:perfect            false # Whether TLB's are perfect
+-res:infinite           false # no functional unit limitations
+-res:ialu                   4 # total number of integer ALU's available
+-res:ibrsh                  4 # total number of branch/I-shift units available
+-res:imult                  1 # total number of integer multiplier/dividers available
+-res:ldport                 2 # total number of memory system load ports available (to CPU)
+-res:stport                 1 # total number of memory system store ports available (to CPU)
+-res:fpalu                  4 # total number of floating point ALU's available
+-res:fpmult                 2 # total number of floating point multipliers available
+-res:fpdiv                  1 # total number of floating point divider/sq-root units available
+# -pcstat              <null> # profile stat(s) against text addr's (mult uses ok)
+-bugcompat              false # operate in backward-compatible bugs mode (for testing only)
+-prime_insts                0 # number of committed instructions for which to prime state
+-sim_insts                  0 # number of committed instructions for which to simulate state after priming
+-warmup_insts               0 # number of committed instructions for which to warm up caches
+-report_fetch           false # report histogram of no. insts fetched/cycle
+-report_issue           false # report histogram of no. insts issued/cycle
+-report_commit          false # report histogram of no. insts committed/cycle
+-report_post_issue        false # report histogram of no. post-issued insts in RUU/cycle
+-report_useful_insts        false # report histogram of no. non-mis-speculated pre-issue insts in RUU/cycle
+-report_ready_insts        false # report histogram of no. non-mis-speculated ready-to-issue insts in RUU/cycle
+-report_miss_indep_insts        false # report histogram of no. insts available to overlap L1 D$ misses
+-report_ruu_occ         false # report histogram of RUU occupancy
+-report_imiss_ruu_occ        false # report histogram of RUU occupancy on I misses
+-report_branch_info        false # report histograms about # pending br's, br-resolution-time
+-report_issue_loc        false # report histograms about from where in the RUU an instruction gets issued
+-report_decode_loc        false # report histograms about from where in the RUU an instruction gets enqueued (decoded)
+-report_issue_delay        false # report histograms about time spent waiting for operands and for issue
+-report_miss_clustering        false # report histograms for D- and I-miss clustering
+-Z                      false # dummy                 
+-z                          0 # dummy                 
+# -dummy               <null> # dummy                 
+
+  Pipetrace range arguments are formatted as follows:
+
+    {{@|#}<start>}:{{@|#|+}<end>}
+
+  Both ends of the range are optional, if neither are specified, the entire
+  execution is traced.  Ranges that start with a `@' designate an address
+  range to be traced, those that start with an `#' designate a cycle count
+  range.  All other range values represent an instruction count range.  The
+  second argument, if specified with a `+', indicates a value relative
+  to the first argument, e.g., 1000:+100 == 1000:1100.  Program symbols may
+  be used in all contexts.
+
+  The level argument controls how much information the trace includes:
+  	0: off (default)
+	1: on, simple mode (just instructions' flow through pipeline)
+	2: on, simple, plus memory info
+	3: (not used)

@@ -41,7 +41,7 @@ if [[ "$#" -ne "1" && "$#" -ne "2" ]]; then
   printf "\n";
   exit 1; 
 fi 
-
+  
 ###################################
 ## Set Running Script Parameters ## 
 ###################################
@@ -60,7 +60,7 @@ printf "\n${NO_COLOR}"
 
 # Construct simulation output files directory path
 OUTPUT_DIR="$BENCHMARK_RESULTS_DIR/$1";
-printf "${CYAN_COLOR}Output being written to:${NO_COLOR}${RED_COLOR} $OUTPUT_DIR$\n${NO_COLOR}";
+printf "${CYAN_COLOR}Output being written to:${NO_COLOR}${RED_COLOR} $OUTPUT_DIR\n${NO_COLOR}";
 
 # Setup configuration file if provided to script 
 if [ "$#" -ne "1" ]; then 
