@@ -1,0 +1,5 @@
+hydra: Version 3.0 of April, 1998.
+Copyright (c) 1998 by Kevin Skadron.  All Rights Reserved.
+
+warning: ret-addr stack size specified in PHT config, but overridden
+fatal: bad 2-level predictor #2 config (<counter_bits> <l1size> <l2size> <hist_size> <retstack_size> <gshare?> <agree?> <spec_update?> <spec_update_repair?>)

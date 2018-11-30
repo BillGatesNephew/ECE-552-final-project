@@ -1,0 +1,539 @@
+hydra: Version 3.0 of April, 1998.
+Copyright (c) 1998 by Kevin Skadron.  All Rights Reserved.
+
+warning: ret-addr stack size specified in PHT config, but overridden
+
+sim: simulation started @ Wed Nov 28 00:16:31 2018, options follow:
+
+sim-outorder: This simulator implements a very detailed out-of-order issue
+superscalar processor with a two-level memory system and speculative
+execution support.  This simulator is a performance simulator, tracking the
+latency of all pipeline operations.
+
+# -config                     # load configuration from a file
+# -dumpconfig                 # dump configuration to a file
+# -h                    false # print help message    
+# -v                    false # verbose operation     
+# -i                    false # start in Dlite debugger
+-seed                       1 # random number generator seed (0 for timer seed)
+# -q                    false # initialize and terminate immediately
+-outfile         ../../benchmark-results/neil1/anagram.out # file for simulator output
+# -ptrace              <null> # generate pipetrace, i.e., <level> <fname|stdout|stderr> <range>
+-threads:max               64 # max number of threads to support
+-fork:in_fetch           true # do forking in fetch stage
+-fork:lat                   1 # penalty charged to forked-off path
+-fork:approx_in_fetch        false # if fork-in-dispatch, try to approx fork-in-fetch
+-fork:penalize_fork_nt         true # if fork-in-dispatch, charge mplat against fork down not-taken path
+-fork:prune             false # only fork on predicted path
+-fetch:num_cache_lines            1 # max no. cache lines to fetch in one cycle
+-fetch:max_lines_per_thread            0 # max no. cache lines to fetch in one cycle (zero: no limit)
+-fetch:max_fetchable_per_line            4 # max no. insts from a cache line that can be fetched as one unit
+-fetch:ifqsize              4 # instruction fetch queue size (in insts)
+-fetch:mplat               10 # extra branch mis-prediction latency
+-fetch:max_in_flight_branches            4 # max number of in-flight branches allowed per_thread (0 = no limit)
+-fetch:pri_pol      simple_rr # fetch priority policy (simple_rr|old_rr|pred_rr|omni_pri|two_omni_pri|pred_pri|pred_pri2|ruu_pri)
+-fetch:two_pri_lev            2 # pri lev for corr. thread under two_omni_pri
+-fetch:pred_pri_lev            2 # pri lev for pred path under pred_pri
+-fetch:ruu_pri_lev            2 # pri lev for least-insts-in-ruu under ruu_pri
+-bpred                  bimod # branch predictor type {nottaken|taken|perfect|bimod|2lev|hybrid}
+-bpred:bimod     2 2048 8 0 # bimodal pred cfg (<cntr_bits> <tbl_size> <retstack_size> <agree?>)
+-bpred:2lev      2 1 1024 8 8 0 0 0 1 # 2lev pred cfg (<cntr_bits> <l1_sz> <l2_sz> <hist_sz> <retstack_size> <gshare?> <agree?> <spec-update?> <spec-update repair?>)
+-bpred:2lev2     2 1024 1024 8 0 0 0 0 1 # 2lev pred cfg #2 (<cntr_bits> <l1_sz> <l2_sz> <hist_sz> <retstack_size> <gshare?> <agree?> <spec-update?> <spec-update repair?>)
+-bpred:hybrid    2:4096:bimod:2lev2:12:8:0:0:1 # hybrid predictor config (<cntr_bits>:<tbl-sz>:<pred1>:<pred2>:<sh-reg-sz>:<retstack_sz>:<gshare?>:<spec-update?>:<spec-update repair?>)
+-bpred:btb       512 4 # BTB config (<num_sets> <associativity>)
+-bpred:retstack             8 # retstack size         
+-bpred:use_old_retstack_interface        false # use retstack size from the PHT config instead of from '-bpred:retstack'
+-bpred:per_thread_retstack     one_xxxx # for multipath: what type of retstack? (one, one_pred, per, tosp_per)
+-bpred:merge_hist            0 # hash global with local history bits; argument specifies global history size
+-bpred:merge_hist_shift            0 # hash shifted global with local history bits; argument specifies global history size
+-bpred:cat_hist             0 # concatenate global and local history bits; argument specifies global history size
+-bpred:gshare_shift            0 # hash shifted baddr with global history bits; argument specifies address left-shift
+-bpred:gshare_drop_lsbits            0 # number of low-order br-address bits (beyond the automatic 3) to drop for gshare
+-bpred:spec_update        false # update bpred in writeback? (ie speculatively)
+-bpred:perf_update        false # update bpred perfectly in decode?
+-bpred:synthetic_boost       0.0000 # percentage of mispredictions to boost (as a fraction)
+-bpred:synthetic_decrease       0.0000 # percentage of good predictions to make incorrect (as a fraction)
+-bpred:fix_addrs        false # correct address prediction for br's w/ correct direction?
+-bpred:fix_addrs_indir        false # correct address prediction for indir jumps?
+-bpred:perf_except_retstack        false # correct address prediction for indir jumps but not for retstack?
+-cbr:hist               false # output cbr history bit-stream to a file?
+-cbr:acc                false # output cbr accuracy bit-stream to a file?
+-cbr:dist               false # output cbr distributions?
+-bpred:retstack_patch_level            2 # 0: no patching, 1: patch TOS pointer only, 2: also patch TOS contents
+-bconf                    sat # bconf predictor type (naive|omni|ones|sat|reset|pattern)
+-bconf:selector          none # bconf predictor threshold selector (none|profile|hw)
+-bconf:spec_update        false # speculatively update the branch confidence predictor?
+-bconf:perf_update        false # update bconf perfectly in decode?
+-bconf:thresholds 7 # thresholds for the bconf predictor (<t1> <t2> <t3>)
+-bconf:table_size         1024 # number of entries in the branch confidence prediction table
+-bconf:table_width            8 # number of bits per entry in the branch confidence prediction table
+-bconf:gshare               1 # xor global history bits with branch-address bits?
+-bconf:dist             false # output bconf correct/incorrect patterns?
+-bconf:squash_extra        false # squash forks for correctly-pred branches?
+-bconf:fork_mispred        false # fork (if possible) on any misprediction?
+-bconf:hist_update            0 # use bconf history to update bconf table entries?
+# -bconf:config_file       <null> # bconf configuration file name
+-decode:width               4 # instruction decode B/W (insts/cycle)
+-decode:extra_lat            0 # extra decode latency  
+-issue:width                4 # instruction issue B/W (insts/cycle)
+-issue:int_width            4 # int instruction issue B/W (insts/cycle)
+-issue:fp_width             4 # fp instruction issue B/W (insts/cycle)
+-issue:inorder          false # run pipeline with in-order issue
+-issue:wrongpath         true # issue instructions down wrong execution paths
+-issue:extra_lat            1 # extra issue latency (for extra (eg register-read) stages)
+-issue:intq_size           16 # integer issue queue (IIQ) size
+-issue:fpq_size            16 # fp issue queue (FIQ) size
+-issue:aggressive        false # gives priority to mem, br, and long-lat ops
+-squash:remove          false # remove RUU/LSQ entries squashed by mispredicts, or propagate them to commit?
+-ruu:size                  16 # register update unit (RUU) size
+-lsq:size                   8 # load/store queue (LSQ) size
+-commit:width               4 # instruction commit B/W (insts/cycle)
+-cache:dl1       dl1:128:32:4:l:4:2 # l1 data cache config, i.e., {<config>|none}
+-cache:dl1lat    1 1 # l1 data cache access latency (<base lat> <extra hit lat>)
+-cache:dl1:ports            2 # Number of dl1 ports   
+-cache:dl1:perfect        false # Whether L1 D-cache is perfect
+-cache:dl2       ul2:1024:64:4:l:4:4 # l2 data cache config, i.e., {<config>|none}
+-cache:dl2lat    2 1 # l2 data cache access latency (<base lat> <extra hit lat>)
+-cache:dl2:perfect        false # Whether L2 D-cache is perfect
+-cache:il1       il1:512:32:1:l:1:2 # l1 inst cache config, i.e., {<config>|dl1|dl2|none}
+-cache:il1lat    1 1 # l1 data cache access latency (<base lat> <extra hit lat>)
+-cache:il1:blksize           32 # L1 I-cache block size, only needed if L1 I-cache is not instantiated
+-cache:il1:perfect        false # Whether L1 I-cache is perfect
+-cache:il2                dl2 # l2 instruction cache config, i.e., {<config>|dl2|none}
+-cache:il2:perfect        false # Whether L2 I-cache is perfect
+-cache:il2lat    2 1 # l1 data cache access latency (<base lat> <extra hit lat>)
+-cache:flush            false # flush caches on system calls
+-cache:icompress        false # convert 64-bit inst addresses to 32-bit inst equivalents
+-mem:lat         18 2 # memory access latency (<first_chunk> <inter_chunk>)
+-mem:width                  8 # memory access bus width (in bytes)
+-tlb:itlb        itlb:16:4096:4:l # instruction TLB config, i.e., {<config>|none}
+-tlb:dtlb        dtlb:32:4096:4:l # data TLB config, i.e., {<config>|none}
+-tlb:lat                   30 # inst/data TLB miss latency (in cycles)
+-tlb:perfect            false # Whether TLB's are perfect
+-res:infinite           false # no functional unit limitations
+-res:ialu                   4 # total number of integer ALU's available
+-res:ibrsh                  4 # total number of branch/I-shift units available
+-res:imult                  1 # total number of integer multiplier/dividers available
+-res:ldport                 2 # total number of memory system load ports available (to CPU)
+-res:stport                 1 # total number of memory system store ports available (to CPU)
+-res:fpalu                  4 # total number of floating point ALU's available
+-res:fpmult                 2 # total number of floating point multipliers available
+-res:fpdiv                  1 # total number of floating point divider/sq-root units available
+# -pcstat              <null> # profile stat(s) against text addr's (mult uses ok)
+-bugcompat              false # operate in backward-compatible bugs mode (for testing only)
+-prime_insts                0 # number of committed instructions for which to prime state
+-sim_insts                  0 # number of committed instructions for which to simulate state after priming
+-warmup_insts               0 # number of committed instructions for which to warm up caches
+-report_fetch           false # report histogram of no. insts fetched/cycle
+-report_issue           false # report histogram of no. insts issued/cycle
+-report_commit          false # report histogram of no. insts committed/cycle
+-report_post_issue        false # report histogram of no. post-issued insts in RUU/cycle
+-report_useful_insts        false # report histogram of no. non-mis-speculated pre-issue insts in RUU/cycle
+-report_ready_insts        false # report histogram of no. non-mis-speculated ready-to-issue insts in RUU/cycle
+-report_miss_indep_insts        false # report histogram of no. insts available to overlap L1 D$ misses
+-report_ruu_occ         false # report histogram of RUU occupancy
+-report_imiss_ruu_occ        false # report histogram of RUU occupancy on I misses
+-report_branch_info        false # report histograms about # pending br's, br-resolution-time
+-report_issue_loc        false # report histograms about from where in the RUU an instruction gets issued
+-report_decode_loc        false # report histograms about from where in the RUU an instruction gets enqueued (decoded)
+-report_issue_delay        false # report histograms about time spent waiting for operands and for issue
+-report_miss_clustering        false # report histograms for D- and I-miss clustering
+-Z                      false # dummy                 
+-z                          0 # dummy                 
+# -dummy               <null> # dummy                 
+
+  Pipetrace range arguments are formatted as follows:
+
+    {{@|#}<start>}:{{@|#|+}<end>}
+
+  Both ends of the range are optional, if neither are specified, the entire
+  execution is traced.  Ranges that start with a `@' designate an address
+  range to be traced, those that start with an `#' designate a cycle count
+  range.  All other range values represent an instruction count range.  The
+  second argument, if specified with a `+', indicates a value relative
+  to the first argument, e.g., 1000:+100 == 1000:1100.  Program symbols may
+  be used in all contexts.
+
+  The level argument controls how much information the trace includes:
+  	0: off (default)
+	1: on, simple mode (just instructions' flow through pipeline)
+	2: on, simple, plus memory info
+	3: (not used)
+	4: on, verbose: simple + mem + the value of each instruction's
+	   register operands and the result written back
+	5: on, verbose, but only shows the functional simulation (ie only
+	   shows correctly-speculated instructions in ruu_dispatch())
+  Memory info prints each load or store's address, and the value of the
+  4-byte word at that address after the load/store has executed.
+
+    Examples:   -ptrace 1 FOO.trc #0:#1000
+                -ptrace 1 BAR.trc @2000:
+                -ptrace 1 BLAH.trc :1500
+                -ptrace 1 UXXE.trc :
+                -ptrace 3 FOOBAR.trc @main:+278
+
+  Branch predictor configuration examples for 2-level predictor:
+    Configurations:   N, M, W, X
+      N   # entries in first level (# of shift register(s))
+      W   width of shift register(s)
+      M   # entries in 2nd level (# of counters, or other FSM)
+      X   (yes-1/no-0) xor history and address for 2nd level index
+    Sample predictors:
+      GAg     : 1, W, 2^W, 0
+      GAp     : 1, W, M (M > 2^W), 0
+      PAg     : N, W, 2^W, 0
+      PAp     : N, W, M (M == 2^(N+W)), 0
+      gshare  : 1, W, 2^W, 1
+  Predictor `hybrid' combines two non-perfect predictors.
+
+  -issue:int_width and -issue:fp_width restrict operations that use
+  integer and fp functional units, respectively; total instructions issued
+  per cycle cannot exceed the general -issue:width parameter
+
+  The cache config parameter <config> has the following format:
+
+    <name>:<nsets>:<bsize>:<assoc>:<repl>:<mshr's>:<bus interval>
+
+    <name>   - name of the cache being defined (can be "none" or "mem")
+    <nsets>  - number of sets in the cache
+    <bsize>  - block size of the cache
+    <assoc>  - associativity of the cache
+    <repl>   - block replacement strategy, 'l'-LRU, 'f'-FIFO, 'r'-random
+    <mshr's> - number of mshr's, ie number of primary misses outstanding
+               0 means in-cache MSHR structure
+    <bus interval> - number of cpu cycles per bus transaction
+  Note we don't specify mshr's or bus interval for TLB's.
+
+    Examples:   -cache:dl1 dl1:4096:32:1:l:4:2
+                -dtlb dtlb:128:4096:32:r
+
+  The cache latency parameter has the following format:
+  <base lat> <extra hit lat>
+  where 'base lat' is the tag access time for that cache, and
+  'extra hit lat' is any extra time before data is available.
+  For example, a small, direct-mapped cache might supply (1, 0), while
+  a large, 4-way cache might supply (2, 1) as its latency.
+
+  Cache levels can be unified by pointing a level of the instruction cache
+  hierarchy at the data cache hiearchy using the "dl1" and "dl2" cache
+  configuration arguments.  Most sensible combinations are supported, e.g.,
+
+    A unified l2 cache (il2 is pointed at dl2):
+      -cache:il1 il1:128:64:1:l:1:2 -cache:il2 dl2
+      -cache:dl1 dl1:256:32:1:l:4:2 -cache:dl2 ul2:1024:64:2:l:4:4
+
+    Or, a fully unified cache hierarchy (il1 pointed at dl1):
+      -cache:il1 dl1
+      -cache:dl1 ul1:256:32:1:l:4:2 -cache:dl2 ul2:1024:64:2:l:4:4
+
+
+
+N_SPEC_LEVELS = 640, N_THREAD_RECS = 64
+
+sim: ** starting performance simulation **
+sim: will simulate with full detail until program exits
+warning: syscall: ioctl: ioctl code not supported d=1, req=1074164744
+
+sim: ** simulation statistics **
+sim_num_insn               18030628 # total number of instructions committed
+sim_num_refs                5958588 # total number of loads and stores committed
+sim_num_loads               4257909 # total number of loads committed
+sim_num_insn.PP            18030628 # total number of instructions committed
+sim_num_refs.PP             5958588 # total number of loads and stores committed
+sim_num_loads.PP            4257909 # total number of loads committed
+sim_num_stores.PP           1700679 # total number of stores committed
+sim_num_branches.PP         4383998 # total number of branches committed
+sim_num_cond_branches.PP      3328170 # total number of cond'l branches committed
+sim_elapsed_time                 26 # total simulation time in seconds
+sim_inst_rate           693485.6923 # simulation speed (in insts/sec)
+sim_total_insn             26990817 # total number of instructions executed
+sim_total_fetched          28532068 # total number of instructions fetched
+sim_total_refs              9160101 # total number of loads and stores executed
+sim_total_loads             6241139 # total number of loads executed
+sim_total_stores            2918962 # total number of stores executed
+sim_total_branches          6508992 # total number of branches executed
+sim_total_cond_branches.PP      4138009 # total number of cond'l branches executed
+primed_insts                      0 # number of insts for which state was primed
+primed_refs                       0 # number of refs for which state was primed
+primed_loads                      0 # number of loads for which state was primed
+primed_cycles                     0 # cycles for which state was primed
+sim_cycle                  22648401 # total simulation time in cycles
+sim_cycle.PP               22648401 # POST_PRIME_CYCLES
+sim_IPC                      0.7961 # instructions per cycle
+sim_CPI                      1.2561 # cycles per instruction
+sim_IPC.PP                   0.7961 # instructions per cycle
+sim_CPI.PP                   1.2561 # cycles per instruction
+sim_exec_BW                  1.1917 # total instructions (mis-spec + committed) per cycle
+sim_IPB.PP                   4.1128 # instruction per branch
+bpred_bimod.lookups.PP      6823092 # number of bpred lookups
+bpred_bimod.updates.PP      4383998 # number of bpred updates
+bpred_bimod.addr_hits.PP      3919003 # number of address-predicted hits
+bpred_bimod.dir_hits.PP      4192041 # number of direction-predicted hits (incl. addr-hits)
+bpred_bimod.misses.PP        191957 # number of misses
+bpred_bimod.cond_hits.PP      3136216 # number of direction-predicted hits for cond branches
+bpred_bimod.cond_seen.PP      3328170 # number of cond branches seen
+bpred_bimod.jr_hits.PP        36158 # number of address-predicted hits for JR-31's
+bpred_bimod.jr_seen.PP       308993 # number of JR-31's seen
+bpred_bimod.indir_hits.PP         1998 # number of address-predicted hits for indir jumps
+bpred_bimod.indir_seen.PP         2017 # number of indir jumps seen
+bpred_bimod.bpred_addr_rate.PP    0.8939 # branch address-prediction rate (i.e., addr-hits/updates)
+bpred_bimod.bpred_dir_rate.PP    0.9562 # branch direction-prediction rate (i.e., all-hits/updates)
+bpred_bimod.bpred_cond_rate.PP    0.9423 # cond branch direction-prediction rate
+bpred_bimod.bpred_jr_rate.PP    0.1170 # JR-31 address-prediction rate (i.e., JR addr-hits/JRs seen)
+bpred_bimod.bpred_indir_rate.PP    0.9906 # indir-jump address-prediction rate (i.e., indir addr-hits/indir's seen)
+bpred_bimod.hybrid_used_pred1.PP            0 # number of times hybrid pred. used pred #1
+bpred_bimod.hybrid_used_pred1_rate.PP    0.0000 # percentage of cond branches that used pred #1
+bpred_bimod.bq_overflows.PP            0 # number of times BQ overwrote an entry because it was full
+bpred_bimod.bq_overflow_rate.PP    0.0000 # percentage of cond branches that overflowed a spec reg
+multi-path: num_thread_context_overflows            0 # number of forks that failed from lack of contexts
+multi-path: num forked overall.PP      1892242 # no. of committed branches that forked
+multi-path: total forked overall.PP      2254658 # total no. of branches that forked
+multi-path: total bad forks squashed.PP            0 # semi-omni: total no. of forks squashed by bconf_squash_extra
+multi-path: total extra forked overall.PP            0 # semi-omni: total no. of mispreds forked by bconf_fork_mispred
+multi-path: total forks pruned.PP            0 # pred-path-pruning: total no. of forks pruned
+bconf:num_unforked_right_lo.PP            0 # no. of committed, low-conf non-forks done for correct predictions
+bconf:num_unforked_wrong_hi.PP       109799 # no. of committed, hi-conf non-forks done for incorrect predictions
+bconf:total_unforked_right_lo.PP            0 # total no. of low-conf non-forks done for correct predictions
+bconf:total_unforked_wrong_hi.PP       148261 # total no. of hi-conf non-forks done for incorrect predictions
+num_forked_right.PP         1810087 # no. of committed forks done for correct predictions
+num_forked_wrong.PP           82155 # no. of committed forks done for incorrect predictions
+num_unforked_right.PP       1326129 # no. of committed non-forks for correct predictions
+num_unforked_wrong.PP        109799 # no. of committed non-forks for incorrect predictions
+total_forked_right.PP       2138665 # total no. of forks done for correct predictions
+total_forked_wrong.PP        115993 # total no. of forks done for incorrect predictions
+total_unforked_right.PP      1735090 # total no. of non-forks for correct predictions
+total_unforked_wrong.PP       148261 # total no. of non-forks for incorrect predictions
+multi-path: num_fork_opps.PP      3328170 # no. of committed cond br's that could have forked
+multi-path: total_fork_opps.PP      4138009 # total no. of cond br's that could have forked
+multi-path: num_fork_dispatch_timing_inaccuracies.PP            0 # number of committed, mispred branches that forked down the not-taken path
+multi-path: num_failed_omni_forks.PP            0 # bconf-omni: number of committed, mispred branches that could not fork
+multi-path: num_fork_dispatch_resource_inaccuracies.PP            0 # bconf-omni: number of committed, mispred branches that could not fork due to simulation inaccuracies
+multi-path: total pre-decode-squashed.PP      1848668 # total no. of paths squashed before reaching decode
+lsq_hits.PP                   12435 # no. of loads to valid addrs met by LSQ
+il1.accesses               18466040 # total number of accesses
+il1.reads                  18466040 # number of read accesses
+il1.writes                        0 # number of write accesses
+il1.hits                   18433202 # total number of hits
+il1.misses                    32838 # total number of misses
+il1.read_hits              18433202 # total number of read hits
+il1.accesses.PP            18466040 # total number of accesses
+il1.reads.PP               18466040 # number of read accesses
+il1.writes.PP                     0 # number of write accesses
+il1.hits.PP                18433202 # total number of hits
+il1.misses.PP                 32838 # total number of misses
+il1.read_hits.PP           18433202 # total number of read hits
+il1.prime_reads                   0 # number of read accesses during priming
+il1.prime_writes                  0 # number of write accesses during priming
+il1.prime_hits                    0 # number of hits during priming
+il1.prime_misses                  0 # number of misses during priming
+il1.prime_read_hits               0 # number of read hits during priming
+il1.replacements.PP           32340 # total number of replacements
+il1.writebacks.PP                 0 # total number of writebacks
+il1.invalidations.PP              0 # total number of invalidations
+il1.miss_rate                0.0018 # miss rate (i.e., misses/ref)
+il1.miss_rate.PP             0.0018 # miss rate (i.e., misses/ref)
+il1.repl_rate.PP             0.0018 # replacement rate (i.e., repls/ref)
+il1.wb_rate.PP               0.0000 # writeback rate (i.e., wrbks/ref)
+il1.inv_rate.PP              0.0000 # invalidation rate (i.e., invs/ref)
+dl1.accesses                6615035 # total number of accesses
+dl1.reads                   4914356 # number of read accesses
+dl1.writes                  1700679 # number of write accesses
+dl1.hits                    6580995 # total number of hits
+dl1.misses                    34040 # total number of misses
+dl1.read_hits               4889483 # total number of read hits
+dl1.accesses.PP             6615035 # total number of accesses
+dl1.reads.PP                4914356 # number of read accesses
+dl1.writes.PP               1700679 # number of write accesses
+dl1.hits.PP                 6580995 # total number of hits
+dl1.misses.PP                 34040 # total number of misses
+dl1.read_hits.PP            4889483 # total number of read hits
+dl1.prime_reads                   0 # number of read accesses during priming
+dl1.prime_writes                  0 # number of write accesses during priming
+dl1.prime_hits                    0 # number of hits during priming
+dl1.prime_misses                  0 # number of misses during priming
+dl1.prime_read_hits               0 # number of read hits during priming
+dl1.replacements.PP           33528 # total number of replacements
+dl1.writebacks.PP              9388 # total number of writebacks
+dl1.invalidations.PP              0 # total number of invalidations
+dl1.miss_rate                0.0051 # miss rate (i.e., misses/ref)
+dl1.miss_rate.PP             0.0051 # miss rate (i.e., misses/ref)
+dl1.repl_rate.PP             0.0051 # replacement rate (i.e., repls/ref)
+dl1.wb_rate.PP               0.0014 # writeback rate (i.e., wrbks/ref)
+dl1.inv_rate.PP              0.0000 # invalidation rate (i.e., invs/ref)
+ul2.accesses                  76266 # total number of accesses
+ul2.reads                     66878 # number of read accesses
+ul2.writes                     9388 # number of write accesses
+ul2.hits                      65979 # total number of hits
+ul2.misses                    10287 # total number of misses
+ul2.read_hits                 56598 # total number of read hits
+ul2.accesses.PP               76266 # total number of accesses
+ul2.reads.PP                  66878 # number of read accesses
+ul2.writes.PP                  9388 # number of write accesses
+ul2.hits.PP                   65979 # total number of hits
+ul2.misses.PP                 10287 # total number of misses
+ul2.read_hits.PP              56598 # total number of read hits
+ul2.prime_reads                   0 # number of read accesses during priming
+ul2.prime_writes                  0 # number of write accesses during priming
+ul2.prime_hits                    0 # number of hits during priming
+ul2.prime_misses                  0 # number of misses during priming
+ul2.prime_read_hits               0 # number of read hits during priming
+ul2.replacements.PP            6191 # total number of replacements
+ul2.writebacks.PP              2551 # total number of writebacks
+ul2.invalidations.PP              0 # total number of invalidations
+ul2.miss_rate                0.1349 # miss rate (i.e., misses/ref)
+ul2.miss_rate.PP             0.1349 # miss rate (i.e., misses/ref)
+ul2.repl_rate.PP             0.0812 # replacement rate (i.e., repls/ref)
+ul2.wb_rate.PP               0.0334 # writeback rate (i.e., wrbks/ref)
+ul2.inv_rate.PP              0.0000 # invalidation rate (i.e., invs/ref)
+itlb.accesses              18466040 # total number of accesses
+itlb.reads                 18466040 # number of read accesses
+itlb.writes                       0 # number of write accesses
+itlb.hits                  18466024 # total number of hits
+itlb.misses                      16 # total number of misses
+itlb.read_hits             18466024 # total number of read hits
+itlb.accesses.PP           18466040 # total number of accesses
+itlb.reads.PP              18466040 # number of read accesses
+itlb.writes.PP                    0 # number of write accesses
+itlb.hits.PP               18466024 # total number of hits
+itlb.misses.PP                   16 # total number of misses
+itlb.read_hits.PP          18466024 # total number of read hits
+itlb.prime_reads                  0 # number of read accesses during priming
+itlb.prime_writes                 0 # number of write accesses during priming
+itlb.prime_hits                   0 # number of hits during priming
+itlb.prime_misses                 0 # number of misses during priming
+itlb.prime_read_hits              0 # number of read hits during priming
+itlb.replacements.PP              0 # total number of replacements
+itlb.writebacks.PP                0 # total number of writebacks
+itlb.invalidations.PP             0 # total number of invalidations
+itlb.miss_rate               0.0000 # miss rate (i.e., misses/ref)
+itlb.miss_rate.PP            0.0000 # miss rate (i.e., misses/ref)
+itlb.repl_rate.PP            0.0000 # replacement rate (i.e., repls/ref)
+itlb.wb_rate.PP              0.0000 # writeback rate (i.e., wrbks/ref)
+itlb.inv_rate.PP             0.0000 # invalidation rate (i.e., invs/ref)
+dtlb.accesses               6627470 # total number of accesses
+dtlb.reads                  6627470 # number of read accesses
+dtlb.writes                       0 # number of write accesses
+dtlb.hits                   6627394 # total number of hits
+dtlb.misses                      76 # total number of misses
+dtlb.read_hits              6627394 # total number of read hits
+dtlb.accesses.PP            6627470 # total number of accesses
+dtlb.reads.PP               6627470 # number of read accesses
+dtlb.writes.PP                    0 # number of write accesses
+dtlb.hits.PP                6627394 # total number of hits
+dtlb.misses.PP                   76 # total number of misses
+dtlb.read_hits.PP           6627394 # total number of read hits
+dtlb.prime_reads                  0 # number of read accesses during priming
+dtlb.prime_writes                 0 # number of write accesses during priming
+dtlb.prime_hits                   0 # number of hits during priming
+dtlb.prime_misses                 0 # number of misses during priming
+dtlb.prime_read_hits              0 # number of read hits during priming
+dtlb.replacements.PP              0 # total number of replacements
+dtlb.writebacks.PP                0 # total number of writebacks
+dtlb.invalidations.PP             0 # total number of invalidations
+dtlb.miss_rate               0.0000 # miss rate (i.e., misses/ref)
+dtlb.miss_rate.PP            0.0000 # miss rate (i.e., misses/ref)
+dtlb.repl_rate.PP            0.0000 # replacement rate (i.e., repls/ref)
+dtlb.wb_rate.PP              0.0000 # writeback rate (i.e., wrbks/ref)
+dtlb.inv_rate.PP             0.0000 # invalidation rate (i.e., invs/ref)
+max_spec_level                    6 # max number of pending misspeculated branches
+ruu_overflows               2879469 # number of times decoding was halted by a full RUU
+lsq_overflows                262070 # number of times decoding was halted by a full LSQ
+func_unit_overflows          142647 # number of times issue failed due to lack of func units
+ifq_overflows               2536969 # number of times fetching was halted by a full IFQ
+num_in_flight_branch_overflows      1283876 # number of times fetching was halted by full shadow state
+
+forked:dist.PP         # Number of forked paths active each cycle
+forked:dist.PP.array_size = 64
+forked:dist.PP.bucket_size = 1
+forked:dist.PP.count = 64
+forked:dist.PP.total = 22648401
+forked:dist.PP.imin = 0
+forked:dist.PP.imax = 9
+forked:dist.PP.average =   0.7926
+forked:dist.PP.std_dev =   0.8984
+forked:dist.PP.overflows = 0
+# pdf == prob dist fn, cdf == cumulative dist fn
+#          index      count    pdf    cdf 
+forked:dist.PP.start_dist
+               0   10916810  48.20  48.20 
+               1    6565006  28.99  77.19 
+               2    4119285  18.19  95.38 
+               3    1042871   4.60  99.98 
+               4       3872   0.02 100.00 
+               5        354   0.00 100.00 
+               6        168   0.00 100.00 
+               7          5   0.00 100.00 
+               8         25   0.00 100.00 
+               9          5   0.00 100.00 
+              10          0   0.00 100.00 
+              11          0   0.00 100.00 
+              12          0   0.00 100.00 
+              13          0   0.00 100.00 
+              14          0   0.00 100.00 
+              15          0   0.00 100.00 
+              16          0   0.00 100.00 
+              17          0   0.00 100.00 
+              18          0   0.00 100.00 
+              19          0   0.00 100.00 
+              20          0   0.00 100.00 
+              21          0   0.00 100.00 
+              22          0   0.00 100.00 
+              23          0   0.00 100.00 
+              24          0   0.00 100.00 
+              25          0   0.00 100.00 
+              26          0   0.00 100.00 
+              27          0   0.00 100.00 
+              28          0   0.00 100.00 
+              29          0   0.00 100.00 
+              30          0   0.00 100.00 
+              31          0   0.00 100.00 
+              32          0   0.00 100.00 
+              33          0   0.00 100.00 
+              34          0   0.00 100.00 
+              35          0   0.00 100.00 
+              36          0   0.00 100.00 
+              37          0   0.00 100.00 
+              38          0   0.00 100.00 
+              39          0   0.00 100.00 
+              40          0   0.00 100.00 
+              41          0   0.00 100.00 
+              42          0   0.00 100.00 
+              43          0   0.00 100.00 
+              44          0   0.00 100.00 
+              45          0   0.00 100.00 
+              46          0   0.00 100.00 
+              47          0   0.00 100.00 
+              48          0   0.00 100.00 
+              49          0   0.00 100.00 
+              50          0   0.00 100.00 
+              51          0   0.00 100.00 
+              52          0   0.00 100.00 
+              53          0   0.00 100.00 
+              54          0   0.00 100.00 
+              55          0   0.00 100.00 
+              56          0   0.00 100.00 
+              57          0   0.00 100.00 
+              58          0   0.00 100.00 
+              59          0   0.00 100.00 
+              60          0   0.00 100.00 
+              61          0   0.00 100.00 
+              62          0   0.00 100.00 
+              63          0   0.00 100.00 
+forked:dist.PP.end_dist
+
+ld_text_base             0x00400000 # program text (code) segment base
+ld_text_size                  84320 # program text (code) size in bytes
+ld_data_base             0x10000000 # program initialized data segment base
+ld_data_size                  29604 # program init'ed `.data' and uninit'ed `.bss' size in bytes
+ld_stack_base            0x7fffc000 # program stack segment base (highest address in stack)
+ld_stack_size                 16384 # program initial stack size
+ld_prog_entry            0x00400140 # program entry point (initial PC)
+ld_environ_base          0x7fff8000 # program environment base address address
+ld_target_big_endian              0 # target executable endian-ness, non-zero if big endian
+mem_brk_point            0x1004e000 # data segment break point
+mem_stack_min            0x20414e44 # lowest address accessed in stack segment
+mem_total_data                  29k # total bytes used in init/uninit data segment
+mem_total_heap                 284k # total bytes used in program heap segment
+mem_total_stack            1568669k # total bytes used in stack segment
+mem_total_mem              1568982k # total bytes used in data, heap, and stack segments
+

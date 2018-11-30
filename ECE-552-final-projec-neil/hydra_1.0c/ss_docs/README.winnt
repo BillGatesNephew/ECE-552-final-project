@@ -1,0 +1,25 @@
+Starting in release 2.0, the simulators build under x86/WinNT.  To build them,
+however, you will need the following:
+
+	1) Cygnus' cygwin32 GNU tool chain release 17.1 or newer,
+	   available from: ftp://ftp.cygnus.com/pub/gnu-win32/
+
+	2) little-endian program binaries, since the SimpleScalar GNU
+	   GCC/GAS/GLD ports have not been re-hosted to WinNT (yet),
+	   either 1) build the binaries on another little-endian
+	   supported platform, or grab them from the binaries release
+	   available from the same place you found this package
+
+Then, follow the install instructions in the README file.
+
+There are still some minor problems with this port; specifically, some of
+the system calls made by SimpleScalar binaries have no obvious counterparts
+under WinNT (e.g., getrusage()), when these system calls are made, a
+warning is printed.
+
+The self-test procedure is different on WinNT, use "make sim-tests-nt" instead
+of "make sim-tests".  This NT-specific target uses "redir.bash", instead of
+"redir.sh" which was written to use csh.
+
+Steve Reinhardt ported the simulators to the WinNT/Cygnus environment.  Thanks!
+

@@ -1,0 +1,8 @@
+The Alpha/OSF port is new in release 2.0.  Currently, it is still under test.
+In addition, the GNU compiler tool chain (except libbfd.a) have not yet
+been ported.  So to use the test port, you'll need little-endian program
+binaries from the binaries release, or you can build them on any another
+supported little-endian platform.
+
+Please send us any bugs/fixes that you find if you use this port.
+

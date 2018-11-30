@@ -1,0 +1,118 @@
+#!/bin/bash 
+
+###################################
+##        Script Constants        #
+###################################
+
+## Shell Colors and Line Separator ##
+RED_COLOR='\033[0;31m';
+GREEN_COLOR='\033[0;32m';
+CYAN_COLOR='\033[0;36m';
+NO_COLOR='\033[0m';
+LINE_SEPARATOR="###############################################################\n";
+
+## Printed Messages ##
+# Script usage messages 
+IMPROPER_CALL_MSG="${CYAN_COLOR}Improper call to benchmark script. The proper format is the following: \n\n${NO_COLOR}";
+PROPER_USAGE_MSG="${RED_COLOR}  ./run_benchmarks <Output Directory Name> [<Simulation Config File>]\n\n${NO_COLOR}${CYAN_COLOR}Where:\n\n${NO_COLOR}";
+OUT_DIR_DESC="  ${RED_COLOR}'Output Directory Name'${NO_COLOR}${CYAN_COLOR}  - The name of the directory (without '/'s) within './benchmark-results/' to write sim output.\n${NO_COLOR}"; 
+SIM_CONF_DESC="  ${RED_COLOR}'Simulation Config File'${NO_COLOR}${CYAN_COLOR} - Optional configuration file to use for running the hydrascalar simulation.\n${NO_COLOR}" 
+SPECIFYING_BENCHMARKS_MSG="${CYAN_COLOR}By default only the Anagram benchmark is run. Specify which benchmarks to run by setting the ENV variables ${NO_COLOR}${RED_COLOR}'RUN_GCC','RUN_ANAGRAM', 'RUN_COMPRESS95', or 'RUN_GO'${NO_COLOR}${CYAN_COLOR} to be either '0' (for don't run), or '1' (for run) when calling the script. For example:\n\n${NO_COLOR}";
+SPECIFYING_BENCHMARKS_USAGE="${RED_COLOR}  RUN_GCC=\"1\" RUN_ANAGRAM=\"0\" ./run_benchmarks my_results_dir${NO_COLOR}\n\n";
+# Benchmarks finished message
+BENCHMARK_DONE="${GREEN_COLOR}Done!\n${NO_COLOR}";
+
+## File Paths ##
+BENCHMARK_RESULTS_DIR="../../benchmark-results";
+
+
+###################################
+##      Check Script Inputs      ## 
+###################################
+if [[ "$#" -ne "1" && "$#" -ne "2" ]]; then 
+  # Print proper usage
+  printf "$IMPROPER_CALL_MSG";
+  printf "$PROPER_USAGE_MSG";
+  printf "$OUT_DIR_DESC";
+  printf "$SIM_CONF_DESC";  
+  printf "\n";
+  printf "$SPECIFYING_BENCHMARKS_MSG";
+  printf "$SPECIFYING_BENCHMARKS_USAGE";  
+  printf "\n";
+  exit 1; 
+fi 
+  
+###################################
+## Set Running Script Parameters ## 
+###################################
+# Set benchmark run flags to their default values if not set
+if [ -z ${RUN_GCC+x} ]; then RUN_GCC="0"; fi
+if [ -z ${RUN_ANAGRAM+x} ]; then RUN_ANAGRAM="1"; fi
+if [ -z ${RUN_COMPRESS95+x} ]; then RUN_COMPRESS95="0"; fi
+if [ -z ${RUN_GO+x} ]; then RUN_GO="0"; fi
+# Print which benchmarks are being run
+printf "${CYAN_COLOR}Running the following benchmarks:${NO_COLOR}${RED_COLOR}";
+if [ $RUN_GCC -ne "0" ]; then printf " 'GCC'"; fi
+if [ $RUN_ANAGRAM -ne "0" ]; then printf " 'Anagram'"; fi 
+if [ $RUN_COMPRESS95 -ne "0" ]; then printf " 'Compress95'"; fi
+if [ $RUN_GO -ne "0" ]; then printf " 'Go'"; fi
+printf "\n${NO_COLOR}"
+
+# Construct simulation output files directory path
+OUTPUT_DIR="$BENCHMARK_RESULTS_DIR/$1";
+printf "${CYAN_COLOR}Output being written to:${NO_COLOR}${RED_COLOR} $OUTPUT_DIR\n${NO_COLOR}";
+
+# Setup configuration file if provided to script 
+if [ "$#" -ne "1" ]; then 
+  CONFIG_FILE="-config $2";
+  printf "${CYAN_COLOR}Using the following sim config file:${NO_COLOR} ${RED_COLOR}$2\n${NO_COLOR}"
+else 
+  CONFIG_FILE="";
+  printf "${CYAN_COLOR}No sim config file specified.\n${NO_COLOR}";
+fi
+
+###################################
+##     Execute the Benchmarks    ##
+###################################
+# Change into the benchmarks directory 
+cd ./working-benchmarks/benchmarks/; 
+
+# GCC Benchmark 
+if [ $RUN_GCC -ne "0" ]; then 
+  printf "${CYAN_COLOR}Running GCC Benchmark...${NO_COLOR}";
+  ./hydra $CONFIG_FILE -outfile "${OUTPUT_DIR}/gcc.out" cc1.ss -O 1stmt.i 
+  printf "$BENCHMARK_DONE";
+fi 
+
+# Anagram Benchmark 
+if [ $RUN_ANAGRAM -ne "0" ]; then 
+  printf "${CYAN_COLOR}Running Anagram Benchmark...${NO_COLOR}";
+  ./hydra $CONFIG_FILE -outfile "${OUTPUT_DIR}/anagram.out" anagram.ss words < anagram.in > anagram.out
+  printf "$BENCHMARK_DONE";
+fi
+
+# Compress95 Benchmark 
+if [ $RUN_COMPRESS95 -ne "0" ]; then 
+  printf "${CYAN_COLOR}Running Compress95 Benchmark...${NO_COLOR}";
+  ./hydra $CONFIG_FILE -outfile "${OUTPUT_DIR}/compress95.out" compress95.ss < compress95.in > compress95.out 
+  printf "$BENCHMARK_DONE";
+fi  
+
+# Go Benchmark 
+if [ $RUN_GO -ne "0" ]; then 
+  printf "${CYAN_COLOR}Running Go Benchmark...${NO_COLOR}";
+  ./hydra $CONFIG_FILE -outfile "${OUTPUT_DIR}/go.out" go.ss 50 9 2stone9.in > go.out
+  printf "$BENCHMARK_DONE";
+fi 
+
+
+
+
+
+
+
+
+
+
+
+
